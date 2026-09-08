@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixel Vault - Gestione Videogiochi</title>
+  <!-- Collegamento al foglio di stile CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Intestazione Principale -->
+  <header>
+    <div class="header-container">
+      <h1>Pixel Vault</h1>
+      <p>Piattaforma Catalogo e Gestione Videogiochi</p>
+    </div>
+  </header>
+
+  <!-- Contenuto Principale -->
+  <main class="container">
+
+    <!-- SEZIONE 1: Barra di Ricerca e Filtri Catalogo -->
+    <section class="card" id="search-section">
+      <h2>Ricerca & Filtri Catalogo</h2>
+      <form id="search-form" class="grid-form">
+        <div class="form-group">
+          <label for="search-title">Cerca per Titolo</label>
+          <input type="text" id="search-title" placeholder="Es. Elden Ring...">
+        </div>
+
+        <div class="form-group">
+          <label for="filter-genre">Genere</label>
+          <select id="filter-genre">
+            <option value="">Tutti i generi</option>
+            <option value="GDR">GDR</option>
+            <option value="Azione">Azione</option>
+            <option value="Open World">Open World</option>
+            <option value="Sport">Sport</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="filter-platform">Piattaforma</label>
+          <select id="filter-platform">
+            <option value="">Tutte le piattaforme</option>
+            <option value="PC">PC</option>
+            <option value="PS5">PS5</option>
+            <option value="Xbox Series X">Xbox Series X</option>
+            <option value="Nintendo Switch">Nintendo Switch</option>
+          </select>
+        </div>
+
+        <div class="form-group btn-group">
+          <button type="submit" class="btn btn-primary">Filtra</button>
+          <button type="reset" id="reset-filters" class="btn btn-secondary">Reset</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- SEZIONE 2: Form Inserimento Nuovo Videogioco -->
+    <section class="card" id="add-game-section">
+      <h2>Inserisci Nuovo Videogioco</h2>
+      <form id="add-game-form" class="grid-form">
+        
+        <div class="form-group">
+          <label for="titolo">Titolo *</label>
+          <input type="text" id="titolo" required placeholder="Titolo del gioco">
+        </div>
+
+        <div class="form-group">
+          <label for="sviluppatore">Sviluppatore</label>
+          <input type="text" id="sviluppatore" placeholder="Es. FromSoftware">
+        </div>
+
+        <div class="form-group">
+          <label for="dataUscita">Data di Uscita</label>
+          <input type="date" id="dataUscita">
+        </div>
+
+        <div class="form-group">
+          <label for="prezzo">Prezzo (€) *</label>
+          <input type="number" id="prezzo" step="0.01" min="0" required placeholder="59.99">
+        </div>
+
+        <div class="form-group">
+          <label for="scontoPercentuale">Sconto (%)</label>
+          <input type="number" id="scontoPercentuale" min="0" max="100" value="0">
+        </div>
+
+        <div class="form-group">
+          <label for="valutazione">Valutazione (0 - 10)</label>
+          <input type="number" id="valutazione" step="0.1" min="0" max="10" placeholder="9.5">
+        </div>
+
+        <div class="form-group full-width">
+          <label for="generi">Generi (separati da virgola)</label>
+          <input type="text" id="generi" placeholder="Es. GDR, Open World, Azione">
+        </div>
+
+        <fieldset class="full-width stock-fieldset">
+          <legend>Scorte per Piattaforma</legend>
+          <div class="stock-grid">
+            <div class="form-group">
+              <label for="stock-pc">PC</label>
+              <input type="number" id="stock-pc" min="0" value="0">
+            </div>
+            <div class="form-group">
+              <label for="stock-ps5">PS5</label>
+              <input type="number" id="stock-ps5" min="0" value="0">
+            </div>
+            <div class="form-group">
+              <label for="stock-xbox">Xbox Series X</label>
+              <input type="number" id="stock-xbox" min="0" value="0">
+            </div>
+            <div class="form-group">
+              <label for="stock-switch">Switch</label>
+              <input type="number" id="stock-switch" min="0" value="0">
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="form-group full-width">
+          <button type="submit" class="btn btn-success">Salva in Database</button>
+        </div>
+
+      </form>
+    </section>
+
+    <!-- SEZIONE 3: Visualizzazione Catalogo / Tabella Giochi -->
+    <section class="card" id="catalog-section">
+      <h2>Catalogo Videogiochi</h2>
+      <div class="table-responsive">
+        <table id="games-table">
+          <thead>
+            <tr>
+              <th>Titolo</th>
+              <th>Sviluppatore</th>
+              <th>Generi</th>
+              <th>Prezzo</th>
+              <th>Valutazione</th>
+              <th>Scorte Totali</th>
+              <th>Azioni</th>
+            </tr>
+          </thead>
+          <tbody id="games-table-body">
+            <!-- I dati dal database verranno inseriti qui dinamicamente tramite app.js -->
+            <tr>
+              <td colspan="7" class="text-center">Caricamento dati in corso...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Piè di pagina -->
+  <footer>
+    <p>&copy; 2026 Pixel Vault — Progetto di Matteo Marian Lavric & Andrea Arinci</p>
+  </footer>
+
+  <!-- Script JavaScript -->
+  <script src="js/app.js"></script>
+</body>
+</html>

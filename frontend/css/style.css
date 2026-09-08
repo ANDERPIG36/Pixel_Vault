@@ -1,0 +1,200 @@
+/* --- RESET E VARIABILI BASE --- */
+:root {
+  --bg-color: #121214;
+  --card-bg: #1e1e24;
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --secondary: #374151;
+  --success: #10b981;
+  --danger: #ef4444;
+  --text-main: #f3f4f6;
+  --text-muted: #9ca3af;
+  --border-color: #2e3039;
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: var(--font-family);
+  line-height: 1.6;
+  padding-bottom: 40px;
+}
+
+/* --- HEADER --- */
+header {
+  background: linear-gradient(135deg, #1e1e24 0%, #2a2a36 100%);
+  border-bottom: 2px solid var(--primary);
+  padding: 30px 20px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  color: #ffffff;
+  letter-spacing: 1px;
+}
+
+header p {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+/* --- LAYOUT CONTENITORE --- */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* --- SCHEDE (CARDS) --- */
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.card h2 {
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  color: var(--primary);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+}
+
+/* --- FORM E GRIGLIE --- */
+.grid-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+input, select {
+  background-color: #121214;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-main);
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input:focus, select:focus {
+  border-color: var(--primary);
+}
+
+/* --- FIELDSET SCORTE --- */
+.stock-fieldset {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 5px;
+}
+
+.stock-fieldset legend {
+  padding: 0 8px;
+  font-size: 0.85rem;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.stock-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+/* --- BOTTONI --- */
+.btn-group {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, background-color 0.2s;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn-primary { background-color: var(--primary); color: white; }
+.btn-secondary { background-color: var(--secondary); color: white; }
+.btn-success { background-color: var(--success); color: white; width: 100%; margin-top: 10px; }
+.btn-danger { background-color: var(--danger); color: white; padding: 6px 10px; font-size: 0.8rem; }
+
+/* --- TABELLA CATOLOGO --- */
+.table-responsive {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  text-align: left;
+}
+
+th, td {
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.9rem;
+}
+
+th {
+  background-color: #16161a;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+tr:hover {
+  background-color: #25252e;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* --- FOOTER --- */
+footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: 30px;
+}
