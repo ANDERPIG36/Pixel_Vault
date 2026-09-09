@@ -89,7 +89,6 @@ async function preparaModifica(id) {
     document.getElementById('titolo').value = gioco.titolo || '';
     document.getElementById('sviluppatore').value = gioco.sviluppatore || '';
     
-    // Formattazione data per l'input date (YYYY-MM-DD)
     if (gioco.dataUscita) {
       document.getElementById('dataUscita').value = gioco.dataUscita.split('T')[0];
     } else {
@@ -101,19 +100,26 @@ async function preparaModifica(id) {
     document.getElementById('valutazione').value = gioco.valutazione || 0;
     document.getElementById('generi').value = gioco.generi ? gioco.generi.join(', ') : '';
 
-    // Popola le scorte per piattaforma
-    const scorte = gioco.scortePerPiattaforma || {};
-    document.getElementById('stock-pc').value = scorte.PC || 0;
-    document.getElementById('stock-ps5').value = scorte.PS5 || 0;
-    document.getElementById('stock-xbox').value = scorte.XboxSeriesX || scorte.Xbox || 0;
-    document.getElementById('stock-switch').value = scorte.Switch || 0;
+    // Gestione scorte con controllo sia sulle chiavi vecchie (con spazi) che nuove
+    const scorte = gioco.scortePerPiattaforma || gioco.ScortePerPiattaforma || {};
+    
+    document.getElementById('stock-pc').value = 
+      scorte.PC ?? scorte.pc ?? 0;
+
+    document.getElementById('stock-ps5').value = 
+      scorte.PS5 ?? scorte.ps5 ?? 0;
+
+    document.getElementById('stock-xbox').value = 
+      scorte.XboxSeriesX ?? scorte["Xbox Series X"] ?? scorte.Xbox ?? 0;
+
+    document.getElementById('stock-switch').value = 
+      scorte.Switch ?? scorte["Nintendo Switch"] ?? 0;
 
     // Aggiorna l'interfaccia visiva per la modifica
     document.getElementById('form-title').innerText = 'Modifica Videogioco';
     document.getElementById('btn-save').innerText = 'Aggiorna Videogioco';
     document.getElementById('btn-cancel').style.display = 'inline-block';
 
-    // Scroll fluido verso il form
     document.getElementById('add-game-section').scrollIntoView({ behavior: 'smooth' });
 
   } catch (error) {
@@ -129,11 +135,9 @@ async function gestisciSalvataggioGioco(e) {
   const id = document.getElementById('game-id').value;
   const isModifica = id !== "";
 
-  // Conversione della stringa generi in un array
   const generiInput = document.getElementById('generi').value;
   const generiArray = generiInput ? generiInput.split(',').map(g => g.trim()) : [];
 
-  // Costruzione dell'oggetto corrispondente al modello MongoDB / C#
   const giocoData = {
     id: isModifica ? id : null,
     titolo: document.getElementById('titolo').value,
@@ -144,13 +148,11 @@ async function gestisciSalvataggioGioco(e) {
     valutazione: parseFloat(document.getElementById('valutazione').value) || 0,
     generi: generiArray,
     scortePerPiattaforma: {
-      PC: parseInt(document.getElementById('stock-pc').value) || 0,
-      PS5: parseInt(document.getElementById('stock-ps5').value) || 0,
-      XboxSeriesX: parseInt(document.getElementById('stock-xbox').value) || 0,
-      Switch: parseInt(document.getElementById('stock-switch').value) || 0
-    },
-    copieVendute: 0,
-    richiedeRestock: false
+      "PC": parseInt(document.getElementById('stock-pc').value) || 0,
+      "PS5": parseInt(document.getElementById('stock-ps5').value) || 0,
+      "XboxSeriesX": parseInt(document.getElementById('stock-xbox').value) || 0,
+      "Switch": parseInt(document.getElementById('stock-switch').value) || 0
+    }
   };
 
   const url = isModifica ? `${API_URL}/${id}` : API_URL;
@@ -166,7 +168,7 @@ async function gestisciSalvataggioGioco(e) {
     if (response.ok) {
       alert(isModifica ? 'Videogioco aggiornato con successo!' : 'Videogioco salvato con successo!');
       annullaModifica();
-      caricaCatalogo(); // Aggiorna la tabella
+      caricaCatalogo();
     } else {
       alert('Errore durante il salvataggio del videogioco.');
     }

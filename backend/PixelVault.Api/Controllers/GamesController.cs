@@ -27,7 +27,7 @@ namespace PixelVault.Api.Controllers
         }
 
         // GET: api/games
-        // Permette di recuperare tutti i giochi, con filtri opzionali per titolo, genere e piattaforma
+        // Permette di recuperare tutti i giochi, con filtri opzionali per titolo, genere e piattaforma (con scorte > 0)
         [HttpGet]
         public async Task<ActionResult<List<Game>>> Get([FromQuery] string? titolo, [FromQuery] string? genere, [FromQuery] string? piattaforma)
         {
@@ -36,22 +36,31 @@ namespace PixelVault.Api.Controllers
                 var filterBuilder = Builders<Game>.Filter;
                 var filter = filterBuilder.Empty;
 
-                // Filtro per Titolo (ricerca parziale e case-insensitive)
+                // 1. Filtro per Titolo (case-insensitive)
                 if (!string.IsNullOrWhiteSpace(titolo))
                 {
                     filter &= filterBuilder.Regex("titolo", new BsonRegularExpression(titolo, "i"));
                 }
 
-                // Filtro per Genere
+                // 2. Filtro per Genere (case-insensitive)
                 if (!string.IsNullOrWhiteSpace(genere))
                 {
-                    filter &= filterBuilder.AnyEq("generi", genere);
+                    filter &= filterBuilder.Regex("generi", new BsonRegularExpression(genere, "i"));
                 }
 
-                // Filtro per Piattaforma
+                // 3. Filtro per Piattaforma: mostra solo se le scorte per quella piattaforma sono > 0
                 if (!string.IsNullOrWhiteSpace(piattaforma))
                 {
-                    filter &= filterBuilder.AnyEq("piattaforme", piattaforma);
+                    // Mappa le opzioni del <select> HTML alle chiavi esatte usate nel dizionario C# / MongoDB
+                    string fieldKey = piattaforma switch
+                    {
+                        "Xbox Series X" => "XboxSeriesX",
+                        "Nintendo Switch" => "Switch",
+                        _ => piattaforma // Per "PC" e "PS5" la chiave coincide
+                    };
+
+                    // Controlla se la quantità nel dizionario scortePerPiattaforma è maggiore di 0
+                    filter &= filterBuilder.Gt($"scortePerPiattaforma.{fieldKey}", 0);
                 }
 
                 var giochi = await _gamesCollection.Find(filter).ToListAsync();
