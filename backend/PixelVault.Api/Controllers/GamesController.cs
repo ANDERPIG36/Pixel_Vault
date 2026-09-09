@@ -27,7 +27,7 @@ namespace PixelVault.Api.Controllers
         }
 
         // GET: api/games
-        // Permette di recuperare tutti i giochi, con filtri opzionali per titolo e genere
+        // Permette di recuperare tutti i giochi, con filtri opzionali per titolo, genere e piattaforma
         [HttpGet]
         public async Task<ActionResult<List<Game>>> Get([FromQuery] string? titolo, [FromQuery] string? genere, [FromQuery] string? piattaforma)
         {
@@ -68,14 +68,21 @@ namespace PixelVault.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Game>> GetById(string id)
         {
-            var gioco = await _gamesCollection.Find(g => g.Id == id).FirstOrDefaultAsync();
-
-            if (gioco == null)
+            try
             {
-                return NotFound("Videogioco non trovato.");
-            }
+                var gioco = await _gamesCollection.Find(g => g.Id == id).FirstOrDefaultAsync();
 
-            return Ok(gioco);
+                if (gioco == null)
+                {
+                    return NotFound("Videogioco non trovato.");
+                }
+
+                return Ok(gioco);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Errore durante il recupero del gioco: {ex.Message}");
+            }
         }
 
         // POST: api/games
@@ -98,6 +105,62 @@ namespace PixelVault.Api.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, $"Errore durante il salvataggio: {ex.Message}");
+            }
+        }
+
+        // PUT: api/games/{id}
+        // Aggiorna un videogioco dal database tramite il suo ID univoco
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(string id, [FromBody] Game updatedGame)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                // Recupera il gioco esistente per verificare che esista
+                var game = await _gamesCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+
+                if (game is null)
+                {
+                    return NotFound("Videogioco non trovato per l'aggiornamento.");
+                }
+
+                // Mantiene lo stesso ID dell'oggetto originale
+                updatedGame.Id = game.Id;
+
+                // Sostituisce il documento in MongoDB
+                await _gamesCollection.ReplaceOneAsync(x => x.Id == id, updatedGame);
+
+                return NoContent(); // 204 No Content (operazione riuscita)
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Errore durante l'aggiornamento: {ex.Message}");
+            }
+        }
+
+        // DELETE: api/games/{id}
+        // Elimina un videogioco dal database tramite il suo ID univoco
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            try
+            {
+                var result = await _gamesCollection.DeleteOneAsync(g => g.Id == id);
+
+                if (result.DeletedCount == 0)
+                {
+                    return NotFound("Videogioco non trovato.");
+                }
+
+                return NoContent(); // 204 No Content
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Errore durante l'eliminazione: {ex.Message}");
             }
         }
     }
