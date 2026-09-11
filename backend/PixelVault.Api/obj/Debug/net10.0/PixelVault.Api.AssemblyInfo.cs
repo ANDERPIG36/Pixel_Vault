@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PixelVault.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+01048956507f530ec28d42368e4fdc2ad8fb8c68")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("PixelVault.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PixelVault.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

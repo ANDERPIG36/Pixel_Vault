@@ -7,6 +7,7 @@
   --secondary: #374151;
   --success: #10b981;
   --danger: #ef4444;
+  --warning: #f59e0b;
   --text-main: #f3f4f6;
   --text-muted: #9ca3af;
   --border-color: #2e3039;
@@ -31,7 +32,7 @@ body {
 header {
   background: linear-gradient(135deg, #1e1e24 0%, #2a2a36 100%);
   border-bottom: 2px solid var(--primary);
-  padding: 30px 20px;
+  padding: 25px 20px;
   text-align: center;
   margin-bottom: 30px;
 }
@@ -45,6 +46,38 @@ header h1 {
 header p {
   color: var(--text-muted);
   font-size: 1rem;
+  margin-bottom: 15px;
+}
+
+/* --- NAVIGAZIONE TRA LE 4 PAGINE --- */
+.main-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.nav-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 1px solid var(--border-color);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-link:hover {
+  background-color: var(--secondary);
+  color: var(--text-main);
+}
+
+.nav-link.active {
+  background-color: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
 }
 
 /* --- LAYOUT CONTENITORE --- */
@@ -72,6 +105,19 @@ header p {
   color: var(--primary);
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 10px;
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  color: var(--text-main);
+}
+
+.card-subtitle {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: -12px;
+  margin-bottom: 15px;
 }
 
 /* --- FORM E GRIGLIE --- */
@@ -108,6 +154,12 @@ input, select {
   transition: border-color 0.2s;
 }
 
+/* Placeholder ben visibile: gli input numerici partono vuoti (niente più "0" scomodo da cancellare) */
+input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
 input:focus, select:focus {
   border-color: var(--primary);
 }
@@ -133,11 +185,61 @@ input:focus, select:focus {
   gap: 10px;
 }
 
+/* --- CHIP GENERI (selezione tipo Steam) --- */
+.genre-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.genre-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background-color: #121214;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.genre-chip:hover {
+  border-color: var(--primary);
+}
+
+.genre-chip.selected {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+}
+
+.genre-chip .remove-genre {
+  font-weight: 700;
+  color: var(--danger);
+  padding: 0 2px;
+}
+
+.genre-manager-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.genre-manager-row input {
+  flex: 1;
+}
+
 /* --- BOTTONI --- */
 .btn-group {
   display: flex;
   gap: 10px;
   align-items: flex-end;
+  flex-wrap: wrap;
 }
 
 .btn {
@@ -155,10 +257,13 @@ input:focus, select:focus {
 
 .btn-primary { background-color: var(--primary); color: white; }
 .btn-secondary { background-color: var(--secondary); color: white; }
-.btn-success { background-color: var(--success); color: white; width: 100%; margin-top: 10px; }
+.btn-success { background-color: var(--success); color: white; }
+.btn-warning { background-color: var(--warning); color: #1a1a1a; }
 .btn-danger { background-color: var(--danger); color: white; padding: 6px 10px; font-size: 0.8rem; }
+.btn-block { width: 100%; margin-top: 10px; }
+.btn-small { padding: 6px 10px; font-size: 0.8rem; }
 
-/* --- TABELLA CATOLOGO --- */
+/* --- TABELLE --- */
 .table-responsive {
   overflow-x: auto;
 }
@@ -186,9 +291,110 @@ tr:hover {
   background-color: #25252e;
 }
 
+tr.row-reorder {
+  background-color: rgba(245, 158, 11, 0.08);
+}
+
 .text-center {
   text-align: center;
 }
+
+/* --- BADGE STATO (disponibilità / riordino) --- */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.badge-success { background-color: rgba(16, 185, 129, 0.15); color: var(--success); }
+.badge-danger { background-color: rgba(239, 68, 68, 0.15); color: var(--danger); }
+.badge-warning { background-color: rgba(245, 158, 11, 0.15); color: var(--warning); }
+
+.platform-stock-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.platform-stock-line + .platform-stock-line {
+  border-top: 1px dashed var(--border-color);
+}
+
+/* --- RIEPILOGO BILANCIO --- */
+.balance-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.balance-tile {
+  background-color: #16161a;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 18px;
+  text-align: center;
+}
+
+.balance-tile .value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-top: 5px;
+}
+
+.value-positive { color: var(--success); }
+.value-negative { color: var(--danger); }
+
+/* --- MODALE (finestra ordine / vendita) --- */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal-box {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 25px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.modal-box h3 {
+  color: var(--primary);
+  margin-bottom: 15px;
+}
+
+.modal-close {
+  float: right;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+}
+
+.form-message {
+  margin-top: 10px;
+  font-size: 0.85rem;
+}
+
+.form-message.error { color: var(--danger); }
+.form-message.success { color: var(--success); }
 
 /* --- FOOTER --- */
 footer {

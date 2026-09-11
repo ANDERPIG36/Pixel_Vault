@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixel Vault - Vendite</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header>
+    <div class="header-container">
+      <h1>Pixel Vault</h1>
+      <p>Punto Vendita</p>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link">Database Giochi</a>
+        <a href="magazzino.html" class="nav-link">Magazzino</a>
+        <a href="vendite.html" class="nav-link">Vendite</a>
+        <a href="bilancio.html" class="nav-link">Bilancio</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="card" id="sales-search-section">
+      <h2>Cerca Videogioco da Vendere</h2>
+      <form id="sales-search-form" class="grid-form">
+        <div class="form-group">
+          <label for="sales-search-title">Titolo</label>
+          <input type="text" id="sales-search-title" placeholder="Es. Elden Ring...">
+        </div>
+
+        <div class="form-group">
+          <label for="sales-filter-genre">Genere</label>
+          <select id="sales-filter-genre">
+            <option value="">Tutti i generi</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="sales-only-available">Disponibilità</label>
+          <select id="sales-only-available">
+            <option value="">Tutti (disponibili e non)</option>
+            <option value="true">Solo disponibili</option>
+          </select>
+        </div>
+
+        <div class="form-group btn-group">
+          <button type="submit" class="btn btn-primary">Cerca</button>
+          <button type="reset" id="sales-reset-filters" class="btn btn-secondary">Reset</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Risultati</h2>
+      <p class="card-subtitle">Ogni piattaforma mostra la disponibilità corrente: vendi direttamente o riordina se esaurita.</p>
+      <div class="table-responsive">
+        <table id="sales-table">
+          <thead>
+            <tr>
+              <th>Titolo</th>
+              <th>Prezzo</th>
+              <th>Disponibilità per Piattaforma</th>
+            </tr>
+          </thead>
+          <tbody id="sales-table-body">
+            <tr>
+              <td colspan="3" class="text-center">Caricamento dati in corso...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODALE: Vendita -->
+  <div class="modal-overlay" id="sale-modal">
+    <div class="modal-box">
+      <span class="modal-close" id="sale-modal-close">&times;</span>
+      <h3>Registra Vendita</h3>
+      <form id="sale-form">
+        <input type="hidden" id="sale-game-id">
+        <input type="hidden" id="sale-platform">
+
+        <div class="form-group">
+          <label>Videogioco</label>
+          <input type="text" id="sale-game-title" disabled>
+        </div>
+
+        <div class="form-group" style="margin-top: 10px;">
+          <label>Piattaforma</label>
+          <input type="text" id="sale-platform-label" disabled>
+        </div>
+
+        <div class="form-group" style="margin-top: 10px;">
+          <label id="sale-quantity-label" for="sale-quantity">Quantità</label>
+          <input type="number" id="sale-quantity" min="1" required placeholder="1">
+        </div>
+
+        <p class="card-subtitle" id="sale-price-preview" style="margin-top: 5px;"></p>
+
+        <button type="submit" class="btn btn-success btn-block" style="margin-top: 10px;">Conferma Vendita</button>
+        <p id="sale-message" class="form-message"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODALE: Riordino rapido da pagina Vendite (per giochi esauriti) -->
+  <div class="modal-overlay" id="quick-restock-modal">
+    <div class="modal-box">
+      <span class="modal-close" id="quick-restock-modal-close">&times;</span>
+      <h3>Gioco Esaurito: Riordina</h3>
+      <form id="quick-restock-form">
+        <input type="hidden" id="qr-game-id">
+        <input type="hidden" id="qr-platform">
+
+        <div class="form-group">
+          <label>Videogioco</label>
+          <input type="text" id="qr-game-title" disabled>
+        </div>
+
+        <div class="form-group" style="margin-top: 10px;">
+          <label>Piattaforma</label>
+          <input type="text" id="qr-platform-label" disabled>
+        </div>
+
+        <div class="form-group" style="margin-top: 10px;">
+          <label for="qr-quantity">Numero di Copie</label>
+          <input type="number" id="qr-quantity" min="1" required placeholder="Es. 10">
+        </div>
+
+        <div class="form-group" style="margin-top: 10px;">
+          <label for="qr-price">Prezzo di Acquisto Unitario (€)</label>
+          <input type="number" id="qr-price" step="0.01" min="0" required placeholder="Es. 35.00">
+        </div>
+
+        <button type="submit" class="btn btn-warning btn-block" style="margin-top: 15px;">Conferma Ordine</button>
+        <p id="quick-restock-message" class="form-message"></p>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Pixel Vault — Progetto di Matteo Marian Lavric &amp; Andrea Arinci</p>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/vendite.js"></script>
+</body>
+</html>

@@ -2,32 +2,24 @@ using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using PixelVault.Api.Models;
+using PixelVault.Api.Services;
 
 namespace PixelVault.Api.Controllers
 {
+    // Pagina "Database Giochi": permette di aggiungere, modificare ed eliminare i videogiochi del catalogo.
     [ApiController]
     [Route("api/[controller]")]
     public class GamesController : ControllerBase
     {
         private readonly IMongoCollection<Game> _gamesCollection;
 
-        public GamesController(IConfiguration configuration)
+        public GamesController(MongoDbContext context)
         {
-            // Legge i parametri di connessione dal file appsettings.json
-            var connectionString = configuration.GetSection("MongoDB:ConnectionString").Value 
-                                   ?? "mongodb://localhost:27017";
-            var databaseName = configuration.GetSection("MongoDB:DatabaseName").Value 
-                               ?? "PixelVault";
-
-            var client = new MongoClient(connectionString);
-            var database = client.GetDatabase(databaseName);
-            
-            // Collega la raccolta 'games' su MongoDB
-            _gamesCollection = database.GetCollection<Game>("games");
+            _gamesCollection = context.Games;
         }
 
         // GET: api/games
-        // Permette di recuperare tutti i giochi, con filtri opzionali per titolo, genere e piattaforma (con scorte > 0)
+        // Recupera tutti i giochi, con filtri opzionali per titolo, genere e piattaforma (con scorte > 0)
         [HttpGet]
         public async Task<ActionResult<List<Game>>> Get([FromQuery] string? titolo, [FromQuery] string? genere, [FromQuery] string? piattaforma)
         {
@@ -36,34 +28,22 @@ namespace PixelVault.Api.Controllers
                 var filterBuilder = Builders<Game>.Filter;
                 var filter = filterBuilder.Empty;
 
-                // 1. Filtro per Titolo (case-insensitive)
                 if (!string.IsNullOrWhiteSpace(titolo))
                 {
                     filter &= filterBuilder.Regex("titolo", new BsonRegularExpression(titolo, "i"));
                 }
 
-                // 2. Filtro per Genere (case-insensitive)
                 if (!string.IsNullOrWhiteSpace(genere))
                 {
                     filter &= filterBuilder.Regex("generi", new BsonRegularExpression(genere, "i"));
                 }
 
-                // 3. Filtro per Piattaforma: mostra solo se le scorte per quella piattaforma sono > 0
                 if (!string.IsNullOrWhiteSpace(piattaforma))
                 {
-                    // Mappa le opzioni del <select> HTML alle chiavi esatte usate nel dizionario C# / MongoDB
-                    string fieldKey = piattaforma switch
-                    {
-                        "Xbox Series X" => "XboxSeriesX",
-                        "Nintendo Switch" => "Switch",
-                        _ => piattaforma // Per "PC" e "PS5" la chiave coincide
-                    };
-
-                    // Controlla se la quantità nel dizionario scortePerPiattaforma è maggiore di 0
-                    filter &= filterBuilder.Gt($"scortePerPiattaforma.{fieldKey}", 0);
+                    filter &= filterBuilder.Gt($"scortePerPiattaforma.{piattaforma}", 0);
                 }
 
-                var giochi = await _gamesCollection.Find(filter).ToListAsync();
+                var giochi = await _gamesCollection.Find(filter).SortBy(g => g.Titolo).ToListAsync();
                 return Ok(giochi);
             }
             catch (Exception ex)
@@ -73,7 +53,6 @@ namespace PixelVault.Api.Controllers
         }
 
         // GET: api/games/{id}
-        // Recupera un singolo gioco tramite il suo ID univoco
         [HttpGet("{id}")]
         public async Task<ActionResult<Game>> GetById(string id)
         {
@@ -95,7 +74,6 @@ namespace PixelVault.Api.Controllers
         }
 
         // POST: api/games
-        // Riceve i dati dal form e salva un nuovo videogioco su MongoDB
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Game newGame)
         {
@@ -106,9 +84,9 @@ namespace PixelVault.Api.Controllers
 
             try
             {
-                // Inserisce il nuovo oggetto nel database (MongoDB assegna automaticamente l'ID)
+                newGame.Id = null; // l'ID lo assegna sempre MongoDB
                 await _gamesCollection.InsertOneAsync(newGame);
-                
+
                 return CreatedAtAction(nameof(GetById), new { id = newGame.Id }, newGame);
             }
             catch (Exception ex)
@@ -118,7 +96,6 @@ namespace PixelVault.Api.Controllers
         }
 
         // PUT: api/games/{id}
-        // Aggiorna un videogioco dal database tramite il suo ID univoco
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, [FromBody] Game updatedGame)
         {
@@ -129,7 +106,6 @@ namespace PixelVault.Api.Controllers
 
             try
             {
-                // Recupera il gioco esistente per verificare che esista
                 var game = await _gamesCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
                 if (game is null)
@@ -137,13 +113,10 @@ namespace PixelVault.Api.Controllers
                     return NotFound("Videogioco non trovato per l'aggiornamento.");
                 }
 
-                // Mantiene lo stesso ID dell'oggetto originale
                 updatedGame.Id = game.Id;
-
-                // Sostituisce il documento in MongoDB
                 await _gamesCollection.ReplaceOneAsync(x => x.Id == id, updatedGame);
 
-                return NoContent(); // 204 No Content (operazione riuscita)
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -152,7 +125,6 @@ namespace PixelVault.Api.Controllers
         }
 
         // DELETE: api/games/{id}
-        // Elimina un videogioco dal database tramite il suo ID univoco
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
@@ -165,7 +137,7 @@ namespace PixelVault.Api.Controllers
                     return NotFound("Videogioco non trovato.");
                 }
 
-                return NoContent(); // 204 No Content
+                return NoContent();
             }
             catch (Exception ex)
             {

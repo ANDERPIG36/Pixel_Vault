@@ -1,0 +1,23 @@
+-cambiare la selezione e ricerca di generi da una lista prefatta 
+dove si possono aggiungere o rimuovere tipo steam
+-rimuovere il placeholder 0 quando scrivi al inizio che è super scomodo
+-aggiungere la parte del magazzino quindi quanti giochi si hanno, richiesta
+di restock (bool true false), copie per piattaforma, fare che sottrae
+in automatico le copie quando si fa una vendita
+-mettere le vendite e gli acquisiti(restock), con un calcolo del
+bilancio totale, considerando sconti nelle vendite
+-fare una pagina per le vendite, dove puoi cercare il gioco per criterio,
+vedendo sia i disponibili che non (segnati come se disponibili o no), e farla
+interattiva con il magazzino (-1 copia quando la vendi, aggiunge i soldi della
+vendita al bilancio contando anche gli sconti)
+-fare una pagina magazzino dove si vedono le copie in magazzino, segnando
+quelle da riordinare (eventualmente aggiungere alla pagina vendite il tasto
+riordina se un gioco è out of stock), e quindi finestra per l'ordine
+(con n copie, prezzo di acquisto etc...) anch'essa collegata al bilancio totale
+-una pagina di bilancio che mostra cronologia vendite e acquisiti e eventuali 
+altri dati
+-sistemare la pagina del database giochi permettendo di aggiungerne, toglierne
+e modificarne, eventualmente ricollegandosi a siti esterni per aggiornamenti 
+in tempo reale su nuovi titoli, sconti o altro.
+-dividere tutto in quindi 4 pagine, magazzino, vendita, bilancio, database giochi
+-risistemare le classi per combaciare con i nuovi criterio

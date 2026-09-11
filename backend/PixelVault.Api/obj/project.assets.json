@@ -423,11 +423,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/ANDERPIG36/Programmazione/C#/Pixel_Vault/backend/PixelVault.Api/PixelVault.Api.csproj",
+      "projectUniqueName": "/home/ANDERPIG36/Downloads/Pixel_Vault/backend/PixelVault.Api/PixelVault.Api.csproj",
       "projectName": "PixelVault.Api",
-      "projectPath": "/home/ANDERPIG36/Programmazione/C#/Pixel_Vault/backend/PixelVault.Api/PixelVault.Api.csproj",
+      "projectPath": "/home/ANDERPIG36/Downloads/Pixel_Vault/backend/PixelVault.Api/PixelVault.Api.csproj",
       "packagesPath": "/home/ANDERPIG36/.nuget/packages/",
-      "outputPath": "/home/ANDERPIG36/Programmazione/C#/Pixel_Vault/backend/PixelVault.Api/obj/",
+      "outputPath": "/home/ANDERPIG36/Downloads/Pixel_Vault/backend/PixelVault.Api/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/ANDERPIG36/.nuget/NuGet/NuGet.Config"

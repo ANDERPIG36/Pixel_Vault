@@ -3,24 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pixel Vault - Gestione Videogiochi</title>
-  <!-- Collegamento al foglio di stile CSS -->
+  <title>Pixel Vault - Database Giochi</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- Intestazione Principale -->
   <header>
     <div class="header-container">
       <h1>Pixel Vault</h1>
       <p>Piattaforma Catalogo e Gestione Videogiochi</p>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link">Database Giochi</a>
+        <a href="magazzino.html" class="nav-link">Magazzino</a>
+        <a href="vendite.html" class="nav-link">Vendite</a>
+        <a href="bilancio.html" class="nav-link">Bilancio</a>
+      </nav>
     </div>
   </header>
 
-  <!-- Contenuto Principale -->
   <main class="container">
 
-    <!-- SEZIONE 1: Barra di Ricerca e Filtri Catalogo -->
+    <!-- SEZIONE 1: Ricerca e Filtri Catalogo -->
     <section class="card" id="search-section">
       <h2>Ricerca & Filtri Catalogo</h2>
       <form id="search-form" class="grid-form">
@@ -33,10 +36,6 @@
           <label for="filter-genre">Genere</label>
           <select id="filter-genre">
             <option value="">Tutti i generi</option>
-            <option value="GDR">GDR</option>
-            <option value="Azione">Azione</option>
-            <option value="Open World">Open World</option>
-            <option value="Sport">Sport</option>
           </select>
         </div>
 
@@ -46,8 +45,8 @@
             <option value="">Tutte le piattaforme</option>
             <option value="PC">PC</option>
             <option value="PS5">PS5</option>
-            <option value="Xbox Series X">Xbox Series X</option>
-            <option value="Nintendo Switch">Nintendo Switch</option>
+            <option value="XboxSeriesX">Xbox Series X</option>
+            <option value="Switch">Nintendo Switch</option>
           </select>
         </div>
 
@@ -62,8 +61,7 @@
     <section class="card" id="add-game-section">
       <h2 id="form-title">Inserisci Nuovo Videogioco</h2>
       <form id="add-game-form" class="grid-form">
-        
-        <!-- Campo nascosto per gestire l'ID durante la modifica (PUT) -->
+
         <input type="hidden" id="game-id" value="">
 
         <div class="form-group">
@@ -88,7 +86,7 @@
 
         <div class="form-group">
           <label for="scontoPercentuale">Sconto (%)</label>
-          <input type="number" id="scontoPercentuale" min="0" max="100" value="0">
+          <input type="number" id="scontoPercentuale" min="0" max="100" placeholder="0">
         </div>
 
         <div class="form-group">
@@ -96,9 +94,22 @@
           <input type="number" id="valutazione" step="0.1" min="0" max="10" placeholder="9.5">
         </div>
 
+        <div class="form-group">
+          <label for="sogliaRiordino">Soglia di Riordino (copie)</label>
+          <input type="number" id="sogliaRiordino" min="0" placeholder="3">
+        </div>
+
+        <!-- Selezione generi tipo Steam: chip cliccabili caricate dalla lista gestibile -->
         <div class="form-group full-width">
-          <label for="generi">Generi (separati da virgola)</label>
-          <input type="text" id="generi" placeholder="Es. GDR, Open World, Azione">
+          <label>Generi</label>
+          <div class="genre-chip-list" id="genre-chip-list">
+            <span class="text-center" style="color: var(--text-muted);">Caricamento generi...</span>
+          </div>
+          <div class="genre-manager-row">
+            <input type="text" id="new-genre-name" placeholder="Aggiungi un nuovo genere alla lista...">
+            <button type="button" id="btn-add-genre" class="btn btn-secondary btn-small">+ Aggiungi Genere</button>
+          </div>
+          <p class="card-subtitle">Clicca su un genere per selezionarlo/deselezionarlo. Usa la "x" per rimuoverlo definitivamente dalla lista.</p>
         </div>
 
         <fieldset class="full-width stock-fieldset">
@@ -106,32 +117,32 @@
           <div class="stock-grid">
             <div class="form-group">
               <label for="stock-pc">PC</label>
-              <input type="number" id="stock-pc" min="0" value="0">
+              <input type="number" id="stock-pc" min="0" placeholder="0">
             </div>
             <div class="form-group">
               <label for="stock-ps5">PS5</label>
-              <input type="number" id="stock-ps5" min="0" value="0">
+              <input type="number" id="stock-ps5" min="0" placeholder="0">
             </div>
             <div class="form-group">
               <label for="stock-xbox">Xbox Series X</label>
-              <input type="number" id="stock-xbox" min="0" value="0">
+              <input type="number" id="stock-xbox" min="0" placeholder="0">
             </div>
             <div class="form-group">
               <label for="stock-switch">Switch</label>
-              <input type="number" id="stock-switch" min="0" value="0">
+              <input type="number" id="stock-switch" min="0" placeholder="0">
             </div>
           </div>
         </fieldset>
 
         <div class="form-group full-width btn-group">
-          <button type="submit" id="btn-save" class="btn btn-success">Salva in Database</button>
-          <button type="button" id="btn-cancel" class="btn btn-secondary" style="display: none;" onclick="annullaModifica()">Annulla Modifica</button>
+          <button type="submit" id="btn-save" class="btn btn-success btn-block">Salva in Database</button>
+          <button type="button" id="btn-cancel" class="btn btn-secondary" style="display: none;">Annulla Modifica</button>
         </div>
 
       </form>
     </section>
 
-    <!-- SEZIONE 3: Visualizzazione Catalogo / Tabella Giochi -->
+    <!-- SEZIONE 3: Catalogo Videogiochi -->
     <section class="card" id="catalog-section">
       <h2>Catalogo Videogiochi</h2>
       <div class="table-responsive">
@@ -144,13 +155,13 @@
               <th>Prezzo</th>
               <th>Valutazione</th>
               <th>Scorte Totali</th>
+              <th>Stato</th>
               <th>Azioni</th>
             </tr>
           </thead>
           <tbody id="games-table-body">
-            <!-- I dati dal database verranno inseriti qui dinamicamente tramite app.js -->
             <tr>
-              <td colspan="7" class="text-center">Caricamento dati in corso...</td>
+              <td colspan="8" class="text-center">Caricamento dati in corso...</td>
             </tr>
           </tbody>
         </table>
@@ -159,12 +170,11 @@
 
   </main>
 
-  <!-- Piè di pagina -->
   <footer>
-    <p>&copy; 2026 Pixel Vault — Progetto di Matteo Marian Lavric & Andrea Arinci</p>
+    <p>&copy; 2026 Pixel Vault — Progetto di Matteo Marian Lavric &amp; Andrea Arinci</p>
   </footer>
 
-  <!-- Script JavaScript -->
-  <script src="js/app.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/database.js"></script>
 </body>
 </html>

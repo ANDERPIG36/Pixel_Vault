@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixel Vault - Bilancio</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header>
+    <div class="header-container">
+      <h1>Pixel Vault</h1>
+      <p>Bilancio e Cronologia Movimenti</p>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link">Database Giochi</a>
+        <a href="magazzino.html" class="nav-link">Magazzino</a>
+        <a href="vendite.html" class="nav-link">Vendite</a>
+        <a href="bilancio.html" class="nav-link">Bilancio</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="card">
+      <h2>Riepilogo</h2>
+      <div class="balance-summary" id="balance-summary">
+        <div class="balance-tile">
+          <div>Totale Vendite</div>
+          <div class="value value-positive" id="summary-sales">€ 0.00</div>
+        </div>
+        <div class="balance-tile">
+          <div>Totale Acquisti</div>
+          <div class="value value-negative" id="summary-purchases">€ 0.00</div>
+        </div>
+        <div class="balance-tile">
+          <div>Bilancio Netto</div>
+          <div class="value" id="summary-net">€ 0.00</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Cronologia Vendite</h2>
+      <div class="table-responsive">
+        <table id="sales-history-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Videogioco</th>
+              <th>Piattaforma</th>
+              <th>Quantità</th>
+              <th>Sconto</th>
+              <th>Incassato</th>
+            </tr>
+          </thead>
+          <tbody id="sales-history-body">
+            <tr><td colspan="6" class="text-center">Caricamento dati in corso...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Cronologia Acquisti / Riordini</h2>
+      <div class="table-responsive">
+        <table id="purchases-history-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Videogioco</th>
+              <th>Piattaforma</th>
+              <th>Quantità</th>
+              <th>Prezzo Unitario</th>
+              <th>Speso</th>
+            </tr>
+          </thead>
+          <tbody id="purchases-history-body">
+            <tr><td colspan="6" class="text-center">Caricamento dati in corso...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Pixel Vault — Progetto di Matteo Marian Lavric &amp; Andrea Arinci</p>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/bilancio.js"></script>
+</body>
+</html>
